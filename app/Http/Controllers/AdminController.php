@@ -54,7 +54,46 @@ class AdminController extends Controller
         return redirect()->back();
     }
     
-    
+    public function getUpdateStudent($name){
+        
+        $student = Student::whereHas('user', function($query) use($name){
+            $query->where('user_name',$name);
+        })->first();
+
+        return view('admin.student.update',compact('student'));
+    }
+
+    public function postUpdateStudent(Request $request, $name)
+    {
+        // return $request;
+        $student = Student::whereHas('user', function($query) use($name){
+            $query->where('user_name',$name);
+        })->first();
+        $this->validate($request, [
+            'email' => 'email|max:255',
+            'firstName' => 'max:255|alpha',
+            'lastName'=> 'max:255|alpha',
+            'level' =>' integer|lt:5',
+            'gpa' => 'numeric|lt:4| gt:0',
+            'gender' => 'numeric',
+            'department_id' => 'numeric',
+        ]);
+
+        $student->user->update([
+            'email' => $request->email,
+            'first_name' => $request->firstName,
+            'last_name' => $request->lastName,
+            'gender' => $request->gender,
+        ]);
+        $student->update([
+            'level' => $request->level,
+            'gpa' => $request->gpa,
+            'department_id' => $request->department_id,
+
+        ]);
+        
+        return redirect()->back();
+    }
     
     
     
