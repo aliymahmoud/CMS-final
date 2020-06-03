@@ -94,6 +94,20 @@ class AdminController extends Controller
         
         return redirect()->back();
     }
+        public function getListStudents(Request $request)
+    {
+        $level = $request->level;
+        $students = Student::where('level',$level)->get();
+        return view('admin.student.list',compact('students','level'));
+    }
+
+    public function getViewStudent($name)
+    {
+        $student = Student::whereHas('user', function($query) use($name){
+            $query->where('user_name',$name);
+        })->first();
+        return view('admin.student.view', compact($student));
+    }
     
     
     
