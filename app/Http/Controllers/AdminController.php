@@ -110,5 +110,44 @@ class AdminController extends Controller
     }
     
     
+    public function getAddCourse(Request $request)
+    {
+        return view('admin.course.create');
+    }
+    public function postAddCourse(Request $request)
+    {
+        $this->validate($request, [
+           'courseName' => 'max:255|required',
+           'courseCode' => 'required|max:255',
+           'minStudentsNumber' => 'required|numeric',
+           'department_id' => 'required',
+           'semester' => 'required',
+           'creditHours' => 'numeric|required',
+        ]);
+
+        $course = Course::create([
+            'name' => $request->courseName,
+            'code' => $request->courseCode,
+            'min_students_number' => $request->minStudentsNumber,
+            'department_id' => $request->department_id,
+            'semester' => $request->semester,
+            'credit_hours' => $request->creditHours,
+        ]);
+        return redirect()->back();
+    }
+    public function getListCourses(Request $request)
+    {
+        $courses = (new Course)->newQuery();
+        if($request->has('department'))
+        {
+            $courses->where('department_id', $request->department);
+        }
+        if($request->has('semester'))
+        {
+            $courses->where('semester', $request->semester);
+        }
+        $courses = $courses->get();
+        return view('admin.course.list', compact('courses'));
+    }
     
 }
