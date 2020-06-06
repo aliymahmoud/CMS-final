@@ -143,5 +143,67 @@ class AdminController extends Controller
         $courses = $courses->get();
         return view('admin.course.list', compact('courses'));
     }
-    
+    public function getUpdateCourse($code) 
+    {
+        $course = Course::where('code', $code)->first();
+        $departments = Department::all();
+        if($course)
+            return view('admin.course.update', compact('course','departments'));
+        else
+            abort('404');
+        // return $course->name;
+    }
+
+    public function postUpdateCourse(Request $request, $code)   
+    {
+        // return $request->department_id;
+        $course = Course::where('code', $code)->first();
+        if($course->code)
+        {
+            $course->update([
+                'name' => $request->courseName,
+                'code' => $request->courseCode,
+                'min_students_number' => $request->minStudentsNumber,
+                'department_id' => $request->department_id,
+                'semester' => $request->semester,
+                'credit_hours' => $request->creditHours,
+                
+            ]);
+            return redirect(route('edit.course',$course->code));
+        }
+        else
+            abort('404');
+    }
+    public function createInstructor(Request $request)
+    {
+        return view('admin.instructor.create');
+    }
+
+    public function storeInstructor(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'email|max:255|required',
+            'firstName' => 'max:255|alpha|required',
+            'lastName'=> 'max:255|alpha|required',
+            'userName' => 'max:255|alpha|required',
+            'password' => 'required',
+            'gender' => 'required',
+            'department_id' => 'required',
+        ]);
+        $user = User::create([
+            'email' => $request->email,
+            'first_name' => $request->firstName,
+            'last_name' => $request->lastName,
+            'user_name' => $request->userName,
+            'password' => \Hash::make($request->password),
+            'gender' => $request->gender,
+            'role' => '2',
+
+        ]);
+        $instructor = Instructor::create([
+            'user_id' => $user->id,
+            'department_id' => $request->department_id,
+        ]);
+        return redirect()->back();
+    }
 }
