@@ -206,4 +206,62 @@ class AdminController extends Controller
         ]);
         return redirect()->back();
     }
+    
+    public function editInstructor($name){
+        
+        $instructor = Instructor::whereHas('user', function($query) use($name){
+            $query->where('user_name',$name);
+        })->first();
+        if($instructor)
+            return view('admin.instructor.update',compact('instructor'));
+        else
+            abort('404');
+    }
+
+    public function updateInstructor(Request $request, $name)
+    {
+        // return $request;
+        $instructor = Instructor::whereHas('user', function($query) use($name){
+            $query->where('user_name',$name);
+        })->first();
+        $this->validate($request, [
+            'email' => 'email|max:255',
+            'firstName' => 'max:255|alpha',
+            'lastName'=> 'max:255|alpha',
+            'gender' => 'numeric',
+            'department_id' => 'numeric',
+        ]);
+
+        $instructor->user->update([
+            'email' => $request->email,
+            'first_name' => $request->firstName,
+            'last_name' => $request->lastName,
+            'gender' => $request->gender,
+        ]);
+        $instructor->update([
+            'department_id' => $request->department_id,
+        ]);
+        return redirect(route('edit.instructor', $instructor->user->user_name));
+    }
+
+    public function listInstructors(Request $request)
+    {
+        $department_id = $request->department_id;
+        $instructors = new Instructor;
+        if($request->has('department_id'))
+        {
+            $instructors = $instructors->where('department_id',$department_id);
+        }
+        $instructors = $instructors->get();
+        return view('admin.instructor.list',compact('instructors','department_id'));
+    }
+
+    public function showInstructor($name)
+    {
+        $instructor = Instructor::whereHas('user', function($query) use($name){
+            $query->where('user_name',$name);
+        })->first();
+        return view('admin.instructor.view', compact('instructor'));
+    }
+
 }
