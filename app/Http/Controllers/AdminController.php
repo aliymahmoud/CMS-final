@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Student;
 use App\Department;
+use App\Course;
+use App\Instructor;
+use App\Hall;
+use App\InstructorCourse;
 
 class AdminController extends Controller
 {
