@@ -58,8 +58,10 @@ class AdminController extends Controller
         $student = Student::whereHas('user', function($query) use($name){
             $query->where('user_name',$name);
         })->first();
-
-        return view('admin.student.update',compact('student'));
+        if($student)
+            return view('admin.student.update',compact('student'));
+        else
+            abort('404');
     }
 
     public function postUpdateStudent(Request $request, $name)
@@ -91,7 +93,7 @@ class AdminController extends Controller
 
         ]);
         
-        return redirect()->back();
+        return redirect(route('edit.student', $student->user->user_name));
     }
         public function getListStudents(Request $request)
     {
@@ -105,34 +107,34 @@ class AdminController extends Controller
         $student = Student::whereHas('user', function($query) use($name){
             $query->where('user_name',$name);
         })->first();
-        return view('admin.student.view', compact($student));
+        return view('admin.student.view', compact('student'));
     }
     
     
     public function getAddCourse(Request $request)
     {
-        return view('admin.course.create');
+        $departments = Department::all();
+        return view('admin.course.create',compact('departments'));
     }
     public function postAddCourse(Request $request)
     {
         $this->validate($request, [
            'courseName' => 'max:255|required',
-           'courseCode' => 'required|max:255',
+           'courseCode' => 'required|max:255|unique:courses,code',
            'minStudentsNumber' => 'required|numeric',
            'department_id' => 'required',
            'semester' => 'required',
            'creditHours' => 'numeric|required',
         ]);
-
-        $course = Course::create([
-            'name' => $request->courseName,
-            'code' => $request->courseCode,
-            'min_students_number' => $request->minStudentsNumber,
-            'department_id' => $request->department_id,
-            'semester' => $request->semester,
-            'credit_hours' => $request->creditHours,
-        ]);
-        return redirect()->back();
+            $course = Course::create([
+                'name' => ucfirst($request->courseName),
+                'code' => $request->courseCode,
+                'min_students_number' => $request->minStudentsNumber,
+                'department_id' => $request->department_id,
+                'semester' => $request->semester,
+                'credit_hours' => $request->creditHours,
+            ]);
+            return redirect()->back();
     }
     public function getListCourses(Request $request)
     {
