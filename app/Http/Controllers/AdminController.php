@@ -10,17 +10,17 @@ use App\Course;
 use App\Instructor;
 use App\Hall;
 use App\InstructorCourse;
-
+use App\CourseHall;
+use App\StudentCourse;
 class AdminController extends Controller
 {
     
-     public function getAddStudent(Request $request)
+    public function getAddStudent(Request $request)
     {
         return view('admin.student.create');
     }
     
-    
-      public function postAddStudent(Request $request)
+    public function postAddStudent(Request $request)
     {
         $this->validate($request,[
             // 'email' => 'email|max:255|required',
@@ -109,6 +109,28 @@ class AdminController extends Controller
         })->first();
         return view('admin.student.view', compact('student'));
     }
+
+    public function deleteStudent($user_name)
+    {
+        $student = Student::whereHas('user', function($query) use($user_name){
+            $query->where('user_name',$user_name);
+        })->first();
+        if($student)
+        {
+            StudentCourse::where('student_id', $student->id)->delete();
+            $student->delete();
+            User::where('user_name', $user_name)->delete();
+            return redirect()->back()->with([
+            "message" => "Student deleted succesfully"
+            ]);
+        }
+        else
+        {
+            return redirect()->back()->with([
+                "message" => "Student was not found succesfully"
+            ]);
+        }
+    }
     
     
     public function getAddCourse(Request $request)
@@ -181,6 +203,25 @@ class AdminController extends Controller
         else
             abort('404');
     }
+    public function deleteCourse($code)
+    {
+        $course = Course::where('code', $code)->first();
+        if($course)
+        {
+            Course::where('code', $code)->delete();
+            return redirect()->back()->with([
+                "message" => "course deleted succesfully"
+            ]);
+        }
+        else
+        {
+            return redirect()->back()->with([
+                "message" => "Course was not found succesfully"
+            ]);
+        }
+    }
+
+
     public function createInstructor(Request $request)
     {
         return view('admin.instructor.create');
@@ -312,6 +353,27 @@ class AdminController extends Controller
             ]);
         }    
     }
+    public function deleteInstructor($user_name)
+    {
+        $instructor = Instructor::whereHas('user', function($query) use($user_name){
+            $query->where('user_name',$user_name);
+        })->first();
+        if($instructor)
+        {
+            InstructorCourse::where('instructor_id', $instructor->id)->delete();
+            $instructor->delete();
+            User::where('user_name', $user_name)->delete();
+            return redirect()->back()->with([
+            "message" => "instructor deleted succesfully"
+            ]);
+        }
+        else
+        {
+            return redirect()->back()->with([
+                "message" => "Instructor was not found succesfully"
+            ]);
+        }
+    }
 
     public function postUnassignCourses($course_id, $user_name)
     {
@@ -395,5 +457,25 @@ class AdminController extends Controller
         $hall = Hall::where('name', $name)->first();
         return view('admin.hall.view', compact('hall'));
     }
+
+    public function deleteHall($id)
+    {
+        $hall = Hall::where('id', $id);
+        if($hall)
+        {
+            CourseHall::where('hall_id', $id)->delete();
+            Hall::where('id', $id)->delete();
+            return redirect()->back()->with([
+            "message" => "hall deleted succesfully"
+            ]);
+        }
+        else
+        {
+            return redirect()->back()->with([
+                "message" => "Hall was not found succesfully"
+            ]);
+        }
+    }
+
 }
     

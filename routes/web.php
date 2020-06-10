@@ -38,6 +38,8 @@ Route::group(['middleware' => ['auth'],],function(){
         Route::post('/update-student/{name}', 'AdminController@postUpdateStudent')->name('update.student');
         Route::get('/students','AdminController@getListStudents')->name('list.student');
         Route::get('/student/{name}', 'AdminController@getViewStudent')->name('view.student');
+        Route::post('/delete-student/{user_name}', 'AdminController@deleteStudent')->name('delete.student');
+
 
         // Courses
         Route::get('/add-course','AdminController@getAddCourse')->name('add.course');
@@ -46,6 +48,7 @@ Route::group(['middleware' => ['auth'],],function(){
         Route::get('/edit-course/{code}', 'AdminController@getUpdateCourse')->name('edit.course');
         Route::post('/update-course/{code}', 'AdminController@postUpdateCourse')->name('update.course');
         Route::get('/course/{code}', 'AdminController@postUpdateCourse')->name('view.course');
+        Route::post('/delete-course/{code}', 'AdminController@deleteCourse')->name('delete.course');
 
         // halls
         Route::get('/halls','AdminController@listHalls')->name('list.hall');
@@ -54,6 +57,8 @@ Route::group(['middleware' => ['auth'],],function(){
         Route::get('/hall/{id}','AdminController@showHall')->name('update.hall');
         Route::get('/edit-hall/{id}','AdminController@editHall')->name('edit.hall');
         Route::post('/update-hall/{id}','AdminController@updateHall')->name('update.hall');
+        Route::post('/delete-hall/{id}', 'AdminController@deleteHall')->name('delete.hall');
+
 
         // instructors
         Route::get('/instructors','AdminController@listInstructors')->name('list.instructor');
@@ -65,6 +70,8 @@ Route::group(['middleware' => ['auth'],],function(){
         Route::get('/assign-course/{user_name}', 'AdminController@getAssignInstructor')->name('assign.instructor');
         Route::post('/assign-course/{course_id}/{user_name}','AdminController@postAssignCourses')->name('assign.course');
         Route::post('/unassign-course/{course_id}/{user_name}','AdminController@postUnassignCourses')->name('unassign.course');
+        Route::post('/delete-instructor/{user_name}', 'AdminController@deleteInstructor')->name('delete.instructor');
+
     });   
     
     // STUDENT FUNCTIONS
