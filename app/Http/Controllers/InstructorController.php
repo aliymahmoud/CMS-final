@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Course;
 use App\Instructor;
+use App\InstructorCourse;
 class InstructorController extends Controller
 {
     public function getListCourses($user_name)
@@ -31,7 +32,7 @@ class InstructorController extends Controller
             if($instructor_courses->contains('course_id',$course_id))
             {
                 return redirect()->back()->with([
-                    "message" => "Instructor already registered",
+                    "message" => "Course already registered",
                 ]);
             }
             $instructorCourse = InstructorCourse::create([
@@ -40,12 +41,12 @@ class InstructorController extends Controller
                 'semester' => '1',
             ]);
             return redirect()->back()->with([
-                "message" => "Instructor assigned successfully",
+                "message" => "Course assigned successfully",
             ]);
         }
         else{
             return redirect()->back()->with([
-                "message" => "Instructor already has more than 7 courses",
+                "message" => "You already has more than 7 courses",
             ]);
         }    
     }
