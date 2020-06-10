@@ -263,5 +263,48 @@ class AdminController extends Controller
         })->first();
         return view('admin.instructor.view', compact('instructor'));
     }
+    public function getAssignInstructor($name)
+    {
+        $instructor = Instructor::whereHas('user', function($query) use($name){
+            $query->where('user_name',$name);
+        })->first();
+        $courses = Course::all();
+        $instructor_courses = $instructor->instructorCourses;
+        return view('admin.instructor.register_course', compact('instructor_courses', 'courses', 'instructor'));
+    }
+    public function postAssignCourses($course_id, $user_name)
+    {
+        $instructor = Instructor::whereHas('user', function($query) use($user_name){
+            $query->where('user_name',$user_name);
+        })->first();
+        if(!$instructor){
+            return redirect()->back()->with([
+                "message" => "Instructor has not been found successfully",
+            ]);
+        }
+        $instructor_courses = $instructor->instructorCourses;
+        if(count($instructor_courses) < 7){
+            if($instructor_courses->contains('course_id',$course_id))
+            {
+                return redirect()->back()->with([
+                    "message" => "Instructor already registered",
+                ]);
+            }
+            $instructorCourse = InstructorCourse::create([
+                'instructor_id' => $instructor->id,
+                'course_id' => $course_id,
+                'semester' => '1',
+            ]);
+            return redirect()->back()->with([
+                "message" => "Instructor assigned successfully",
+            ]);
+        }
+        else{
+            return redirect()->back()->with([
+                "message" => "Instructor already has more than 7 courses",
+            ]);
+        }    
+    }
 
 }
+    
