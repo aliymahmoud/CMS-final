@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class StudentCourse extends Model
 {
-    protected $fillable = [
-        'student_id','course_id',
-    ];
+   
+    protected $guarded = [];
+    protected $table = 'student_courses';
     public function student()
     {
         return $this->belongsTo('App\Student');
