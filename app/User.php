@@ -15,10 +15,11 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    // protected $fillable = [
+    //     'user_name', 'email', 'password','first_name','last_name','gender','role',
+    // ];
 
+    protected $guarded = [];
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -36,4 +37,36 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function students()
+    {
+        return $this->hasMany('App\Student');
+    }
+    public function instructors()
+    {
+        return $this->hasMany('App\Instructor');
+    }
+    public function isAdmin()
+    {
+        return ($this->role == 0)? true : false;
+    }
+    public function isStudent()
+    {
+        return ($this->role == 1)? true : false;
+    }
+    public function isInstructor()
+    {
+        return ($this->role == 2)? true : false;
+    }
+    public function getNameAttribute()
+    {
+        return $this->first_name;
+    }
+    public function adminlte_image()
+    {
+        return asset('images/default.jpg');
+    }
+    public function getFullNameAttribute()
+    {
+        return ucfirst($this->first_name)." ".ucfirst($this->last_name);
+    }
 }
