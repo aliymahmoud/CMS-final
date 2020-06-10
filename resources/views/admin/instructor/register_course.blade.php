@@ -30,14 +30,14 @@
                     <td>{{ ($course->semester == 1)? "First" : "Second" }}</td>
                     <td>
                         @if ($instructor_courses->contains('course_id',$course->id))
-                        <form action="{{ route('unregister.course.instructor',$course->id) }}" method="POST">
+                        <form action="{{ route('unassign.course',['course_id' => $course->id,'user_name' => $instructor->user->user_name]) }}" method="POST">
                             @csrf
-                            <button type="submit" class="unregister btn-danger btn-sm btn fa">Unregister</button>
+                            <button type="submit" class="unregister btn-danger btn-sm btn fa">Unassign</button>
                         </form>
                         @else
-                        <form action="{{ route('register.course.instructor',$course->id) }}" method="POST">
+                        <form action="{{ route('assign.course',['course_id' => $course->id,'user_name' => $instructor->user->user_name]) }}" method="POST">
                             @csrf
-                            <button type="submit" class="register btn-primary btn-sm btn fa">Register</button>
+                            <button type="submit" class="register btn-primary btn-sm btn fa">Assign</button>
                         </form>
                         @endif
                     </td>

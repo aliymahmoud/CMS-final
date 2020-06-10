@@ -1,8 +1,5 @@
 @extends('adminlte::page')
 @section('content')
-@if(Session::has('message'))
-    <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
-@endif
     <form action="{{ route('list.course') }}" id="form">
         <div class="row">
             <div class="col-4">
@@ -54,11 +51,9 @@
                     <td>{{ $course->semester }}</td>
                     <td>{{ $course->credit_hours }}</td>
                     <td>
-                        <form action={{ route('delete.course', $course->code) }} method="POST">
-                            @csrf
-                            <a href="{{ route('edit.course', $course->code) }}" class='btn btn-warning btn-sm fa'><i class="fas fa-pen"></i> Edit</a>
-                            <button type="submit" class='btn btn-danger btn-sm' onclick="return confirm('ARE YOU SURE?')"><i class="fas fa-trash-alt"></i> Delete</button>
-                        </form>
+                        <a href="#" class='btn btn-primary btn-sm'><i class="fas fa-eye"></i><span> View</span></a>
+                        <a href="{{ route('edit.course', $course->code) }}" class='btn btn-warning btn-sm fa'><i class="fas fa-pen"></i> Edit</a>
+                        <a href="#" class='btn btn-danger btn-sm' onclick="return confirm('ARE YOU SURE?')"><i class="fas fa-trash-alt"></i> Delete</a>
                     </td>
                 </tr>
              @endforeach

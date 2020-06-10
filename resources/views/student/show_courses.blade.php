@@ -18,4 +18,3 @@
     </tbody>
 </table>
 @endsection
-© 2020 GitHub, Inc.
