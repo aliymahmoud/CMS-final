@@ -46,3 +46,56 @@
         </tbody>
     </table>
 @endsection
+
+{{-- @section('js')
+    <script>
+        
+                
+        $(".register").on('click',function(){
+                var id = $(this).attr('id');
+                var user_id = $("#"+id).attr('user_id');
+                var course_id = $("#"+id).attr('course_id');
+                var newUrl = "{{ url('unregister-course') }}/"+course_id+"/"+user_id;
+                var url = $("#"+id).attr("url");
+                $.ajax({
+                    data : {
+                        "_token" : "{{ csrf_token() }}",
+                    }, 
+                    type : "POST",
+                    url : url,
+                    success: data =>{
+                        if(data.state){
+                            $("#"+id).attr('class',"unregister btn-danger btn-sm btn fa");
+                            $("#"+id).html('Unregister');
+                            $("#"+id).attr('url',newUrl);
+                        }       
+                    }
+                });
+            });
+            
+            $(".unregister").on('click',function(){
+                var id = $(this).attr('id');
+                var user_id = $("#"+id).attr('user_id');
+                var course_id = $("#"+id).attr('course_id');
+                var newUrl = "{{ url('register-course') }}/"+course_id+"/"+user_id;
+                var url = $("#"+id).attr("url");
+                $.ajax({
+                    data : {
+                        "_token" : "{{ csrf_token() }}",
+                    }, 
+                    type : "POST",
+                    url : url,
+                    success: data =>{
+                        if(data.state){
+                            $("#"+id).attr('class',"register btn-primary btn-sm btn fa");
+                            $("#"+id).html('Register');
+                            $("#"+id).attr('url',newUrl);
+                        }
+                    }
+                });
+            });
+        $(document).ready(function(){
+            
+        });
+    </script>
+@endsection --}}
