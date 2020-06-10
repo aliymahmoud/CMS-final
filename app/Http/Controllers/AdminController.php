@@ -306,5 +306,36 @@ class AdminController extends Controller
         }    
     }
 
+    public function postUnassignCourses($course_id, $user_name)
+    {
+        $instructor = Instructor::whereHas('user', function($query) use($user_name){
+            $query->where('user_name',$user_name);
+        })->first();
+        if(!$instructor)
+        {
+            return redirect()->back()->with([
+                "message" => "Instructor has not been found successfully",
+            ]);
+        }
+        $instructorCourses = $instructor->instructorCourses;
+        if($instructorCourses->contains('course_id', $course_id))
+        {
+            InstructorCourse::where('course_id', $course_id)->delete();
+            return redirect()->back()->with([
+                "message" => "Instructor unassigned successfully",
+            ]);
+            // return response()->json([
+            //     "state" => true,
+            //     "message" => "Course has been deleted successfully",
+            // ]);
+        }
+        else
+        {
+            return redirect()->back()->with([
+                "message" => "Instructor not registered",
+            ]);
+        }
+    }
+
 }
     
