@@ -11,14 +11,14 @@ class Department extends Model
     ];
     public function students()
     {
-        return $this->hasMany('App/Students');
+        return $this->hasMany('App\Students');
     }
     public function courses()
     {
-        return $this->hasMany('App/Courses');
+        return $this->hasMany('App\Courses');
     }
     public function instructors()
     {
-        return $this->hasMany('App/Instructor');
+        return $this->hasMany('App\Instructor');
     }
 }

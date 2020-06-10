@@ -11,6 +11,6 @@ class HallAvailability extends Model
     ];
     public function course_hall()
     {
-        return $this->belongsTo('App/CourseHall');
+        return $this->belongsTo('App\CourseHall');
     }
 }

@@ -62,12 +62,25 @@ Route::group(['middleware' => ['auth'],],function(){
         Route::get('/instructor/{id}','AdminController@showInstructor')->name('update.instructor');
         Route::get('/edit-instructor/{id}','AdminController@editInstructor')->name('edit.instructor');
         Route::post('/update-instructor/{id}','AdminController@updateInstructor')->name('update.instructor');
+        Route::get('/assign-course/{user_name}', 'AdminController@getAssignInstructor')->name('assign.instructor');
+        Route::post('/assign-course/{course_id}/{user_name}','AdminController@postAssignCourses')->name('assign.course');
+        Route::post('/unassign-course/{course_id}/{user_name}','AdminController@postUnassignCourses')->name('unassign.course');
     });   
     
     // STUDENT FUNCTIONS
     Route::post('first-login','StudentController@firstLogin')->name('first-login');
     Route::group(['middleware' => ['student'],],function(){
         Route::post('update-profile','StudentController@updateProfile')->name('update.profile');
+        Route::get('regitser-courses','StudentController@getRegisterCourses')->name('regitser.courses');
+        Route::post('register-course/{course_id}/{student_id}','StudentController@postRegisterCourses')->name('post.register.course');
+        Route::post('unregister-course/{course_id}/{student_id}','StudentController@postUnregisterCourses')->name('post.unregister.course');
+        Route::get('show-regestered-courses', 'StudentController@getShowRegesteredCourses')->name('get.show.course');
     });
+
+    // INSTRUCTOR FUNCTIONS
+    Route::get('/courses/{user_name}', 'InstructorController@getListCourses')->name('list.course.instructor');
+    Route::post('/register-course/{course_id}','InstructorController@postRegisterCourses')->name('register.course.instructor');
+    Route::post('/unregister-course/{course_id}','InstructorController@postUnregisterCourses')->name('unregister.course.instructor');
+
 });
         

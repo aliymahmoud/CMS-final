@@ -11,10 +11,10 @@ class InstructorCourse extends Model
     ];
     public function course()
         {
-            return $this->belongsTo('App/Course');
+            return $this->belongsTo('App\Course');
         }
     public function instructor()
         {
-            return $this->belongsTo('App/Instuctor');
+            return $this->belongsTo('App\Instuctor');
         }
 }

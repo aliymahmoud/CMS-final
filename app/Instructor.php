@@ -11,18 +11,18 @@ class Instructor extends Model
     ];
     public function instructorCourse()
     {
-        return $this->hasMany('App/InstructorCourse');
+        return $this->hasMany('App\InstructorCourse');
     }
     public function courses()
     {
-        return $this->hasManyThrough('App/Course', 'App/InstructorCourse');
+        return $this->hasManyThrough('App\Course', 'App\InstructorCourse');
     }
     public function department()
     {
-        return $this->belongsTo('App/Department');
+        return $this->belongsTo('App\Department');
     }
     public function user()
     {
-        return $this->belongsTo('App/User');
+        return $this->belongsTo('App\User');
     }
 }
