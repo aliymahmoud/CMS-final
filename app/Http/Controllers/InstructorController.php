@@ -49,4 +49,33 @@ class InstructorController extends Controller
             ]);
         }    
     }
+    public function postUnregisterCourses($course_id)
+    {
+        $instructor = Instructor::where('user_id', \Auth::user()->id)->first();
+        if(!$instructor)
+        {
+            return redirect()->back()->with([
+                "message" => "Instructor has not been found successfully",
+            ]);
+        }
+        $instructorCourses = $instructor->instructorCourses;
+        if($instructorCourses->contains('course_id', $course_id))
+        {
+            InstructorCourse::where('course_id', $course_id)->delete();
+            return redirect()->back()->with([
+                "message" => "Instructor unassigned successfully",
+            ]);
+            // return response()->json([
+            //     "state" => true,
+            //     "message" => "Course has been deleted successfully",
+            // ]);
+        }
+        else
+        {
+            return redirect()->back()->with([
+                "message" => "Instructor not registered",
+            ]);
+        }
+    }
+
 }
