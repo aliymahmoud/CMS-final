@@ -27,10 +27,6 @@
                   <input type="email" class="form-control" placeholder="Enter Email" name="email">
                 </div>
                 <div class="form-group">
-                  <label>Password</label>
-                  <input type="password" class="form-control" placeholder="Enter Password" name="password">
-                </div>
-                <div class="form-group">
                   <label for="male">Male</label>
                   <input type="radio" name="gender" value="1" id="male">
                   <label for="female">Female</label>
