@@ -497,7 +497,18 @@ class AdminController extends Controller
     }
     public function postAssignHall(Request $request)
     {
-        return $request;
+        foreach($request->course-id as $index=>$course_id){
+            $available = HallsAvailable::findOrFail(id,$request->hallAvailableId[$index]);
+            $available->update([
+                'avaiable' => '0'
+            ]);
+            CourseHall::create([
+                'course_id' => $course_id,
+                'hall_availability_id' => $available->id
+            ]);
+        }
+        return redirect()->back();
+        
     }
 
 }
