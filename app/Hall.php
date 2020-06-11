@@ -9,16 +9,16 @@ class Hall extends Model
     protected $fillable = [
         'name',
     ];
-    public function courseAvailabilites()
+    public function hallsAvailable()
     {
-        return $this->hasMany('App/CourseAvailabilites');
+        return $this->hasMany('App\HallsAvailable');
     }
     public function courseHalls()
     {
-        return $this->hasManyThrough('App/CourseHalls', 'App/CourseAvailabilites');
+        return $this->hasManyThrough('App\CourseHalls', 'App\HallsAvailable');
     }
     public function courses()
     {
-        return $this->hasManyThrough('App/Course','App/CourseHalls');
+        return $this->hasManyThrough('App\Course','App\CourseHalls');
     }
 }

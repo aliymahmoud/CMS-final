@@ -12,6 +12,7 @@ use App\Hall;
 use App\InstructorCourse;
 use App\CourseHall;
 use App\StudentCourse;
+use App\HallsAvailable;
 class AdminController extends Controller
 {
     
@@ -421,6 +422,17 @@ class AdminController extends Controller
         $hall = Hall::create([
             'name' => $request->name,
         ]);
+        $time_begin = 8;
+        $time_end = 10;
+        for ($period=0; $period < 5; $period++) { 
+            HallsAvailable::create([
+                'hall_id' => $hall->id,
+                'time' => $time_begin.':00 -> '.$time_end.':00',
+                'available' => '1',
+            ]);
+            $time_begin+=2;
+            $time_end+=2;
+        }
         return redirect()->back();
     }
 
@@ -475,6 +487,17 @@ class AdminController extends Controller
                 "message" => "Hall was not found succesfully"
             ]);
         }
+    }
+    public function getAssignHall($id)
+    {
+        $hall = Hall::findOrFail($id);
+        $courses = Course::all();
+        // return $hall->hallsAvailable;
+        return view('admin.hall.assign',compact('hall','courses'));
+    }
+    public function postAssignHall(Request $request)
+    {
+        return $request;
     }
 
 }

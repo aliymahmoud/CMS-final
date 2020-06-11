@@ -58,6 +58,8 @@ Route::group(['middleware' => ['auth'],],function(){
         Route::get('/edit-hall/{id}','AdminController@editHall')->name('edit.hall');
         Route::post('/update-hall/{id}','AdminController@updateHall')->name('update.hall');
         Route::post('/delete-hall/{id}', 'AdminController@deleteHall')->name('delete.hall');
+        Route::get('/assign-hall/{id}','AdminController@getAssignHall')->name('assign.hall');
+        Route::post('/assign-hall/{id}','AdminController@postAssignHall')->name('assign.hall');
 
 
         // instructors

@@ -15,8 +15,8 @@ class CreateHallsAvaliabilitiesTable extends Migration
     {
         Schema::create('halls_avaliabilities', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('course_id');
-            $table->time('time');
+            $table->integer('hall_id');
+            $table->string('time');
             $table->integer('available');
             $table->timestamps();
         });
